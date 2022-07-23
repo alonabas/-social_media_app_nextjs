@@ -1,5 +1,5 @@
-import { createTheme } from "@mui/material";
-import COLORS from "./colors";
+import { createTheme } from '@mui/material';
+import COLORS from './colors';
 
 const theme = createTheme({
 	palette: {
@@ -7,8 +7,8 @@ const theme = createTheme({
 			light: COLORS.second,
 			main: COLORS.third,
 			dark: COLORS.first,
-			contrastText: COLORS.fifth
-		}
+			contrastText: COLORS.fifth,
+		},
 	},
 	typography: {
 		fontFamily: [
@@ -23,14 +23,14 @@ const theme = createTheme({
 		MuiTypography: {
 			defaultProps: {
 				style: {
-					color: COLORS.third
-				}
-			}
+					color: COLORS.third,
+				},
+			},
 		},
 		MuiInputLabel: {
 			defaultProps: {
 				style: {
-					color: COLORS.fifth
+					color: COLORS.fifth,
 				},
 			},
 		},
@@ -40,27 +40,26 @@ const theme = createTheme({
 				root: {
 					':hover .MuiOutlinedInput-notchedOutline': {
 						borderColor: COLORS.second,
-					}
+					},
 				},
 
 				notchedOutline: {
 					borderColor: COLORS.fifth,
 				},
 
-			}
+			},
 		},
 		MuiButton: {
 			styleOverrides: {
 				containedCustom: {
 					color: COLORS.contrast2,
-					"&:hover": {
+					'&:hover': {
 						backgroundColor: COLORS.fourth,
-					}
+					},
 				},
-				 
-			}
-		}
-	}
+			},
+		},
+	},
 });
 
 export default theme;
