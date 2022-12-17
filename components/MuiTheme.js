@@ -9,6 +9,9 @@ const theme = createTheme({
 			dark: COLORS.first,
 			contrastText: COLORS.fifth,
 		},
+		error: {
+			main: COLORS.error,
+		},
 	},
 	typography: {
 		fontFamily: [

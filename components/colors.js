@@ -11,6 +11,7 @@ const COLORS = {
 	fifth: '#cbdadb',
 	contrast: '#63474d',
 	contrast2: '#13547a',
+	error: '#FF8BA0',
 };
 
 export const BG_COLORS = {

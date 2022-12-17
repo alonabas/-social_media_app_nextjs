@@ -15,6 +15,7 @@
   "rules": {
     "indent": [2, "tab"],
     "react/jsx-indent": ["error", "tab"],
+    "react/jsx-props-no-spreading": "off",
 	"react/jsx-indent-props": [2, "tab"],
     "no-tabs": 0,
     "react/prop-types": 0,

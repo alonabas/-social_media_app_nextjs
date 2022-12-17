@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.css';
 import {
 	Head, Html, Main, NextScript,
 } from 'next/document';
