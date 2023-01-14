@@ -2,10 +2,9 @@ import { Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import COLORS from './colors';
 
-const UserName = styled(Typography)({
-	fontWeight: 600,
+const RegularDark14 = styled(Typography)({
 	color: COLORS.contrast2,
-	fontSize: '24px',
+	fontSize: '14px',
 });
 
-export default UserName;
+export default RegularDark14;

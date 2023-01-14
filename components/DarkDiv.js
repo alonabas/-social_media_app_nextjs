@@ -1,15 +1,12 @@
 import { styled } from '@mui/system';
 import COLORS, { BG_COLORS } from './colors';
 
-const Container = styled('main')({
+const DarkDiv = styled('div')({
 	backgroundImage: `linear-gradient(to bottom right, ${BG_COLORS.start}, ${BG_COLORS.end})`,
-	height: '100vh',
-	width: '100vw',
 	display: 'flex',
 	alignItems: 'center',
-	flexDirection: 'column',
-	justifyContent: 'center',
 	color: COLORS.second,
 	borderColor: COLORS.second,
+	borderRadius: '6px',
 });
-export default Container;
+export default DarkDiv;

@@ -1,55 +1,48 @@
+import axios from 'axios';
 import React from 'react';
+import { styled } from '@mui/system';
+
 import LightContainer from '../../components/LightContainer';
-import Posts from '../../components/Posts';
-import UserName from '../../components/UserName';
+import BoldDarkText24 from '../../components/BoldDarkText24';
+import { getUserProfileById, SERVER_URL } from '../../utils/constants';
+import Bio from '../../components/Bio';
+import CreateNewPost from '../../components/CreateNewPost';
 
-const UserScreen = ({ profile }) => {
-	console.log(profile);
-	return (
-		<LightContainer className="d-flex flex-column align-items-center py-3">
-			<UserName>
-				User
-				{' '}
-				{profile?.userId}
-			</UserName>
-			<Posts />
-		</LightContainer>
-	);
-};
+const LocalLightContainer = styled(LightContainer)({
+	top: 0,
+	left: 0,
+	margin: '5% 10%',
+	padding: '10px 20px',
+	height: 'calc(100vh - 10%)',
+	width: 'calc(100vw - 20%)',
+});
 
-export const getStaticProps = async ({ params }) => {
-	const userId = params?.userid;
-	const query = `
-		query($userId: ID!){
-			profile(userId: $userId) {
-				errors {
-					message
-					code
-				}
-				profile {
-					bio
-					user {
-						email
-						name
-					}
-				}
-			}
-		}
-	`;
+const UserScreen = ({ profile = {} }) => (
+	<LocalLightContainer className="d-flex flex-column align-items-center py-3 position-absolute">
+		<BoldDarkText24>
+			User
+			{' '}
+			{profile?.user?.name}
+		</BoldDarkText24>
+		<Bio bio={profile?.bio} />
+		{profile?.isMe && (
+			<CreateNewPost />
+		)}
+	</LocalLightContainer>
+);
+
+export const getServerSideProps = async ({ params, req }) => {
+	const userId = params?.userid.replace('user', '');
 	try {
-		const data = await fetch('http://localhost:4000/', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-			},
-			body: JSON.stringify({
-				query,
+		const { data } = await axios.post(
+			SERVER_URL,
+			{
+				query: getUserProfileById,
 				variables: { userId },
-			}),
-		}).then((r) => r.json());
-		const errors = data?.data?.profile?.errors;
-		if (errors.length >= 0) {
+			},
+		);
+		const errors = data?.data?.profile?.errors ?? [];
+		if (errors.length > 0) {
 			if (errors[0]?.code === 401) {
 				return {
 					redirect: {
@@ -59,9 +52,10 @@ export const getStaticProps = async ({ params }) => {
 			}
 
 			return {
-				redirect: {
-					destination: '/',
-				},
+				notFound: true,
+				// redirect: {
+				// 	destination: '/',
+				// },
 			};
 		}
 		const profile = data?.data?.profile?.profile;
@@ -76,9 +70,9 @@ export const getStaticProps = async ({ params }) => {
 	}
 };
 
-export const getStaticPaths = async () => ({
-	paths: [], // indicates that no page needs be created at build time
-	fallback: 'blocking', // indicates the type of fallback
-});
+// export const getStaticPaths = async () => ({
+// 	paths: [], // indicates that no page needs be created at build time
+// 	fallback: 'blocking', // indicates the type of fallback
+// });
 
 export default UserScreen;

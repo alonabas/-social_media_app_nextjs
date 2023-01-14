@@ -1,14 +1,15 @@
 import { createTheme } from '@mui/material';
 import COLORS from './colors';
 
+const { palette } = createTheme();
+const { augmentColor } = palette;
+
+const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
+
 const theme = createTheme({
 	palette: {
-		custom: {
-			light: COLORS.second,
-			main: COLORS.third,
-			dark: COLORS.first,
-			contrastText: COLORS.fifth,
-		},
+		custom: createColor(COLORS.third),
+		customDark: createColor(COLORS.contrast2),
 		error: {
 			main: COLORS.error,
 		},
@@ -24,11 +25,11 @@ const theme = createTheme({
 	},
 	components: {
 		MuiTypography: {
-			defaultProps: {
-				style: {
-					color: COLORS.third,
-				},
-			},
+			// defaultProps: {
+			// 	style: {
+			// 		color: COLORS.third,
+			// 	},
+			// },
 		},
 		MuiInputLabel: {
 			defaultProps: {
@@ -44,6 +45,7 @@ const theme = createTheme({
 					':hover .MuiOutlinedInput-notchedOutline': {
 						borderColor: COLORS.second,
 					},
+					color: COLORS.second,
 				},
 
 				notchedOutline: {

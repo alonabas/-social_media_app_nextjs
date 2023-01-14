@@ -10,3 +10,22 @@ export const loginQuery = `
 		}
 	}
 `;
+
+export const getUserProfileById = `
+		query($userId: ID!){
+			profile(userId: $userId) {
+				errors {
+					message
+					code
+				}
+				profile {
+					bio
+					isMe
+					user {
+						email
+						name
+					}
+				}
+			}
+		}
+	`;

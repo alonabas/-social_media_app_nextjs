@@ -3,13 +3,12 @@ import { ThemeProvider } from '@mui/system';
 import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import BoldTypography from '../components/BoldTypography';
-import Container from '../components/Container';
 import LocalHead from '../components/LocalHead';
 import Main from '../components/Main';
 import theme from '../components/MuiTheme';
 
 const Register = () => (
-	<Container className="d-flex">
+	<React.Fragment>
 		<LocalHead name="Registration" />
 		<ThemeProvider theme={theme}>
 
@@ -60,7 +59,7 @@ const Register = () => (
 			</Main>
 		</ThemeProvider>
 
-	</Container>
+	</React.Fragment>
 );
 
 export default Register;
