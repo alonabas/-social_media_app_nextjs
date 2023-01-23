@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { styled } from '@mui/system';
+import { getSession } from 'next-auth/react';
 
 import LightContainer from '../../components/LightContainer';
 import BoldDarkText24 from '../../components/BoldDarkText24';
@@ -31,14 +32,21 @@ const UserScreen = ({ profile = {} }) => (
 	</LocalLightContainer>
 );
 
-export const getServerSideProps = async ({ params, req }) => {
+export const getServerSideProps = async (context) => {
+	const { params, req } = context;
 	const userId = params?.userid.replace('user', '');
+	const session = await getSession(context);
 	try {
 		const { data } = await axios.post(
 			SERVER_URL,
 			{
 				query: getUserProfileById,
 				variables: { userId },
+			},
+			{
+				headers: {
+					Authorization: session?.user?.backendToken,
+				},
 			},
 		);
 		const errors = data?.data?.profile?.errors ?? [];
@@ -60,7 +68,10 @@ export const getServerSideProps = async ({ params, req }) => {
 		}
 		const profile = data?.data?.profile?.profile;
 		return {
-			props: { profile },
+			notFound: profile === null,
+			props: {
+				profile,
+			},
 
 		};
 	} catch (e) {

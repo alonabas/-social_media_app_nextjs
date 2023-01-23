@@ -1,40 +1,17 @@
 import { Alert, Button, TextField } from '@mui/material';
-import { useRouter } from 'next/router';
 import React from 'react';
+import { signIn, getSession } from 'next-auth/react';
 
 import BoldTypography from '../components/BoldTypography';
 import LocalHead from '../components/LocalHead';
 import Main from '../components/Main';
-import { loginQuery } from '../utils/constants';
-import useRequest from '../utils/RequestHook';
 
 const Login = () => {
 	const [email, setEmail] = React.useState('');
 	const [password, setPassword] = React.useState('');
-	const router = useRouter();
-	const {
-		data, isLoading, error, refetch: login,
-	} = useRequest({
-		query: loginQuery,
-		variablesObj: {
-			auth: {
-				email,
-				password,
-			},
-		},
-		params: {
-			initiallyDisabled: true,
-			disabled: false,
-		},
-	});
-	const token = data?.signin?.token;
-	const errors = data?.signin?.errors?.[0]?.message ?? error;
-	React.useEffect(() => {
-		if (token) {
-			window.sessionStorage.setItem('token', token);
-			router.push('/');
-		}
-	}, [token]);
+	// TODO: status of login - loading, errors etc
+	const errors = [];
+	const isLoading = false;
 	return (
 		<React.Fragment>
 			<LocalHead name="Enter to your account" />
@@ -71,7 +48,7 @@ const Login = () => {
 				<Button
 					color="custom"
 					variant="contained"
-					onClick={login}
+					onClick={() => signIn('credentials', { redirect: false, email, password })}
 					disabled={isLoading}
 				>
 					{isLoading ? 'Signing in...' : 'Sign in'}
@@ -81,5 +58,23 @@ const Login = () => {
 		</React.Fragment>
 	);
 };
+
+export async function getServerSideProps(context) {
+	const session = await getSession(context);
+	if (session) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: {
+			session,
+		},
+	};
+}
 
 export default Login;

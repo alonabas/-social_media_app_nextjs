@@ -1,6 +1,6 @@
 import { Button, Collapse } from '@mui/material';
 import React from 'react';
-import PostInput from './post/Input';
+import PostInput from './postEdit/Input';
 
 const CreateNewPost = () => {
 	const [isOpenInput, setIsOpenInput] = React.useState(false);

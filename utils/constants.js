@@ -11,6 +11,26 @@ export const loginQuery = `
 	}
 `;
 
+export const getPostsList = `
+	query {
+		posts {
+			posts {
+				author {
+					email,
+					id
+				},
+				content,
+				title,
+				id,
+				published
+			},
+			errors {
+				message
+			}
+		}
+	}
+`;
+
 export const getUserProfileById = `
 		query($userId: ID!){
 			profile(userId: $userId) {
