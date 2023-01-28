@@ -94,10 +94,14 @@ export const authOptions = {
 			secret,
 			maxAge,
 		}) {
-			const signedToken = await jwt.sign({
-				backendToken: token.backendToken,
-				email: token.email,
-			}, secret);
+			const signedToken = await jwt.sign(
+				{
+					backendToken: token.backendToken,
+					email: token.email,
+				},
+				secret,
+				{ expiresIn: 3600000 },
+			);
 			return signedToken;
 		},
 		async decode({

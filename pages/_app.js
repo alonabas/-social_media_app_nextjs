@@ -5,6 +5,7 @@ import Head from 'next/head';
 import { ThemeProvider } from '@mui/system';
 
 import theme from '../components/MuiTheme';
+import Layout from '../components/Layout';
 
 export default ({
 	Component,
@@ -15,7 +16,9 @@ export default ({
 			<title>Create Next App</title>
 		</Head>
 		<ThemeProvider theme={theme}>
-			<Component {...pageProps} />
+			<Layout>
+				<Component {...pageProps} />
+			</Layout>
 		</ThemeProvider>
 	</SessionProvider>
 

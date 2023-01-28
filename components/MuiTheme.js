@@ -4,12 +4,16 @@ import COLORS from './colors';
 const { palette } = createTheme();
 const { augmentColor } = palette;
 
-const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
+const createColor = (mainColor, contrast = '#fff') => ({
+	...augmentColor({ color: { main: mainColor } }),
+	contrastText: contrast,
+});
 
 const theme = createTheme({
 	palette: {
-		custom: createColor(COLORS.third),
-		customDark: createColor(COLORS.contrast2),
+		custom: createColor(COLORS.third, COLORS.contrast2),
+		customDark: createColor(COLORS.contrast2, COLORS.third),
+		customSemiDark: createColor(`${COLORS.contrast2}ee`, COLORS.second),
 		error: {
 			main: COLORS.error,
 		},

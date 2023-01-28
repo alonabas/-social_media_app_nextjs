@@ -11,5 +11,10 @@ const Container = styled('main')({
 	justifyContent: 'center',
 	color: COLORS.second,
 	borderColor: COLORS.second,
+	'& > #__next': {
+		height: '100vh',
+		width: '100vw',
+		display: 'flex',
+	},
 });
 export default Container;

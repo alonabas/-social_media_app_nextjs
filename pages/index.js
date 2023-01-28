@@ -4,7 +4,7 @@ import React from 'react';
 import DisplayErrors from '../components/DisplayErrors';
 import PostDisplay from '../components/postDisplay';
 
-import { getPostsList } from '../utils/constants';
+import { getPostsList, UNAUTHORIZED_CODE } from '../utils/constants';
 
 const Home = ({ errors = [], publishedPosts = [] }) => {
 	if (errors.length > 0) {
@@ -30,7 +30,7 @@ const Home = ({ errors = [], publishedPosts = [] }) => {
 
 export async function getServerSideProps(context) {
 	const session = await getSession(context);
-	if (!session) {
+	if (!session || session.status === 'unauthenticated') {
 		return {
 			redirect: {
 				destination: '/login',
@@ -39,23 +39,48 @@ export async function getServerSideProps(context) {
 		};
 	}
 
-	const response = await axios.post(
-		process.env.GRAPHQL_BACKEND_URL,
-		{
-			query: getPostsList,
-		},
-		{
-			headers: {
-				Authorization: session?.user?.backendToken,
+	try {
+		const response = await axios.post(
+			process.env.GRAPHQL_BACKEND_URL,
+			{
+				query: getPostsList,
 			},
-		},
-	);
-	return {
-		props: {
-			errors: response.data?.data?.posts?.errors ?? [],
-			publishedPosts: response.data?.data?.posts?.posts ?? [],
-		},
-	};
+			{
+				headers: {
+					Authorization: session?.user?.backendToken,
+				},
+			},
+		);
+		if (response.status === UNAUTHORIZED_CODE) {
+			return {
+				redirect: {
+					destination: '/login',
+				},
+			};
+		}
+		return {
+			props: {
+				errors: response.data?.data?.posts?.errors ?? [],
+				publishedPosts: response.data?.data?.posts?.posts ?? [],
+			},
+		};
+	} catch (e) {
+		if (e.response.status === UNAUTHORIZED_CODE) {
+			return {
+				redirect: {
+					destination: '/login',
+				},
+			};
+		}
+		return {
+			props: {
+				errors: [{
+					message: e.message,
+				}],
+				publishedPosts: [],
+			},
+		};
+	}
 }
 
 export default Home;

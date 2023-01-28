@@ -11,6 +11,19 @@ export const loginQuery = `
 	}
 `;
 
+export const me = `
+	query {
+		me {
+			user {
+				email
+			}
+			errors {
+				message
+			}
+		}
+	}
+`;
+
 export const getPostsList = `
 	query {
 		posts {
@@ -49,3 +62,5 @@ export const getUserProfileById = `
 			}
 		}
 	`;
+
+export const UNAUTHORIZED_CODE = 401;
