@@ -12,6 +12,7 @@ const createColor = (mainColor, contrast = '#fff') => ({
 const theme = createTheme({
 	palette: {
 		custom: createColor(COLORS.third, COLORS.contrast2),
+		customWithError: createColor(COLORS.third, COLORS.contrast),
 		customDark: createColor(COLORS.contrast2, COLORS.third),
 		customSemiDark: createColor(`${COLORS.contrast2}ee`, COLORS.second),
 		error: {

@@ -11,6 +11,17 @@ export const loginQuery = `
 	}
 `;
 
+export const registerQuery = `
+	mutation($auth: AuthInput!, $name: String!, $bio: String){
+		signup(auth: $auth, name: $name, bio: $bio) {
+			errors {
+				message
+			},
+			token
+		}
+	}
+`;
+
 export const me = `
 	query {
 		me {

@@ -17,7 +17,9 @@ const Login = () => {
 
 	const signInFunc = () => {
 		setIsLoading(true);
-		signIn('credentials', { redirect: false, email, password }).then((r) => {
+		signIn('credentials', {
+			redirect: false, email, password, signUp: false,
+		}).then((r) => {
 			setIsLoading(false);
 			if (r.ok) {
 				redirect('/');
@@ -39,10 +41,10 @@ const Login = () => {
 				</BoldTypography>
 				{error
 					&& (
-						<Alert severity="error" variant="outlined" color="error">
+						<Alert severity="error" variant="filled" color="error">
 							{error}
 						</Alert>
-					)					}
+					)}
 				<TextField
 					label="E-mail"
 					variant="outlined"

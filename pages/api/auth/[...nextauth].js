@@ -3,17 +3,7 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-
-const loginQuery = `
-	mutation($auth: AuthInput){
-		signin(auth: $auth) {
-			errors {
-				message
-			},
-			token
-		}
-	}
-`;
+import { loginQuery, registerQuery } from '../../../utils/constants';
 
 export const authOptions = {
 	// Configure one or more authentication providers
@@ -41,26 +31,36 @@ export const authOptions = {
 				// e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
 				// You can also use the `req` object to obtain additional parameters
 				// (i.e., the request IP address)
-				try {
-					const result = await axios.post(process.env.GRAPHQL_BACKEND_URL, {
-						query: loginQuery,
-						variables: {
-							auth: {
-								email: credentials.email,
-								password: credentials.password,
-							},
-						},
-					});
-					// console.log(result);
+				const {
+					signUp, email, password, bio, name,
+				} = credentials;
+				const variables = signUp === 'true' ? {
+					auth: {
+						email,
+						password,
+					},
+					bio,
+					name,
+				} : {
+					auth: {
+						email,
+						password,
+					},
+				};
+				const result = await axios.post(process.env.GRAPHQL_BACKEND_URL, {
+					query: signUp === 'true' ? registerQuery : loginQuery,
+					variables,
+				});
+				const key = signUp === 'true' ? 'signup' : 'signin';
 
-					const token = result?.data?.data?.signin?.token;
-					const errors = result?.data?.data?.signin?.errors?.[0]?.message;
-					// If no error and we have user data, return it
-					if (token) {
-						return { backendToken: token, email: credentials.email };
-					}
-				} catch (e) {
-					console.log(e);
+				const token = result?.data?.data?.[key]?.token;
+				const errors = result?.data?.data?.[key]?.errors?.[0]?.message;
+				// If no error and we have user data, return it
+				if (token) {
+					return { backendToken: token, email: credentials.email };
+				}
+				if (errors || errors.length > 0) {
+					throw new Error(errors);
 				}
 
 				// Return null if user data could not be retrieved

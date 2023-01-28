@@ -15,8 +15,8 @@ const COLORS = {
 };
 
 export const BG_COLORS = {
-	start: '#13547aee',
-	end: '#80d0c7ee',
+	start: '#13547a',
+	end: '#80d0c7',
 };
 
 export default COLORS;
