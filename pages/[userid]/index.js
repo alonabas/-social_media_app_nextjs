@@ -8,6 +8,7 @@ import BoldDarkText24 from '../../components/BoldDarkText24';
 import { getUserProfileById, SERVER_URL } from '../../utils/constants';
 import Bio from '../../components/Bio';
 import CreateNewPost from '../../components/CreateNewPost';
+import PostEdit from '../../components/postEdit';
 
 const LocalLightContainer = styled(LightContainer)({
 	top: 0,
@@ -18,8 +19,20 @@ const LocalLightContainer = styled(LightContainer)({
 	width: 'calc(100vw - 20%)',
 });
 
+const DisplayAllPosts = ({ posts = [] }) => (
+	<div className="d-flex flex-wrap justify-content-evenly align-items-center overflow-auto my-2">
+		{posts.map((p) => (
+			<PostEdit
+				post={p}
+				key={p.id}
+				className="mx-3 my-2 align-self-stretch"
+			/>
+		))}
+	</div>
+);
+
 const UserScreen = ({ profile = {} }) => (
-	<LocalLightContainer className="d-flex flex-column align-items-center py-3 position-absolute">
+	<LocalLightContainer className="d-flex flex-column align-items-center py-3 overflow-auto position-relative">
 		<BoldDarkText24>
 			User
 			{' '}
@@ -29,11 +42,12 @@ const UserScreen = ({ profile = {} }) => (
 		{profile?.isMe && (
 			<CreateNewPost />
 		)}
+		<DisplayAllPosts posts={profile?.posts} />
 	</LocalLightContainer>
 );
 
 export const getServerSideProps = async (context) => {
-	const { params, req } = context;
+	const { params } = context;
 	const userId = params?.userid.replace('user', '');
 	const session = await getSession(context);
 	try {

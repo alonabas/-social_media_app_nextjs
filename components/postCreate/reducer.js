@@ -8,6 +8,7 @@ export const ACTIONS_FOR_SAVE_INPUT = {
 	START_SAVE: 'SAVE_INPUT_START',
 	ON_ERROR: 'SAVE_INPUT_START_ON_ERROR',
 	ON_SUCCESS: 'SAVE_INPUT_START_ON_SUCCESS',
+	CLEAR: 'SAVE_INPUT_START_CLEAR',
 };
 
 const reducer = (state = INIT_STATE_FOR_SAVE_INPUT, action = {}) => {
@@ -29,6 +30,10 @@ const reducer = (state = INIT_STATE_FOR_SAVE_INPUT, action = {}) => {
 			data: undefined,
 			isLoading: false,
 			error: action.error,
+		};
+	case ACTIONS_FOR_SAVE_INPUT.CLEAR:
+		return {
+			...INIT_STATE_FOR_SAVE_INPUT,
 		};
 	default:
 		return state;

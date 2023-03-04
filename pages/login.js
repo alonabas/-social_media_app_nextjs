@@ -1,7 +1,7 @@
 import { Alert, Button, TextField } from '@mui/material';
 import React from 'react';
 import { signIn, getSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 import axios from 'axios';
 import BoldTypography from '../components/BoldTypography';
@@ -14,6 +14,7 @@ const Login = () => {
 	const [password, setPassword] = React.useState('');
 	const [error, setError] = React.useState('');
 	const [isLoading, setIsLoading] = React.useState(false);
+	const router = useRouter();
 
 	const signInFunc = () => {
 		setIsLoading(true);
@@ -22,7 +23,7 @@ const Login = () => {
 		}).then((r) => {
 			setIsLoading(false);
 			if (r.ok) {
-				redirect('/');
+				router.replace('/');
 			} else {
 				setError('Failed to login');
 			}
@@ -109,7 +110,7 @@ export async function getServerSideProps(context) {
 			},
 		};
 	} catch (e) {
-		if (e.response.status === UNAUTHORIZED_CODE) {
+		if (e.response?.status === UNAUTHORIZED_CODE) {
 			return {
 				props: {},
 			};

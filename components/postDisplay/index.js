@@ -1,21 +1,16 @@
 import { CardContent } from '@mui/material';
 import React from 'react';
-import { styled } from '@mui/system';
 
-import StyledCard from './StyledCard';
-import Author from './Author';
+import StyledCard from '../styled/StyledCard';
+import Author from '../styled/AuthorDisplay';
+import ItalicDiv from '../styled/ItalicDiv';
 
-const ItalicDiv = styled('div')({
-	fontStyle: 'italic',
-	fontWeight: 300,
-});
-
-const PostDisplay = ({ post = {} }) => {
+const PostDisplay = ({ post = {}, className = '' }) => {
 	const {
-		id, author = {}, content, title,
+		author = {}, content, title,
 	} = post;
 	return (
-		<StyledCard variant="elevation" elevation={8} raised>
+		<StyledCard variant="elevation" elevation={8} raised className={className}>
 			<CardContent className="d-flex flex-column">
 				<div>{title}</div>
 				<ItalicDiv>{content}</ItalicDiv>

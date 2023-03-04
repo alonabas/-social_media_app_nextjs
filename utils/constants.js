@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const SERVER_URL = 'http://localhost:4000/';
 
 export const loginQuery = `
@@ -65,6 +67,12 @@ export const getUserProfileById = `
 				profile {
 					bio
 					isMe
+					posts(last: 10) {
+						content
+						title
+						published
+						id
+					}
 					user {
 						email
 						name
@@ -74,4 +82,54 @@ export const getUserProfileById = `
 		}
 	`;
 
+export const createPost = `
+	mutation($post: PostInput!){
+		postCreate(post: $post) {
+			errors {
+				message
+			}
+			post {
+				content
+				title
+				id
+			}
+		}
+	}
+`;
+
+export const publishPostQuery = `
+	mutation($postId: ID!) {
+		postPublish(postId: $postId) {
+			errors {
+				message
+			},
+			post {
+				published
+				id
+			}
+		}
+	}
+`;
+
+export const unpublishPostQuery = `
+	mutation($postId: ID!) {
+		postUnpublish(postId: $postId) {
+			errors {
+				message
+			},
+			post {
+				published
+				id
+			}
+		}
+	}
+`;
+
 export const UNAUTHORIZED_CODE = 401;
+
+export const getFetcher = (url) => axios(url)
+	.then((res) => res.data)
+	.catch((e) => {
+		console.debug(`Error fetching ${url}: ${e}`);
+		return [];
+	});
