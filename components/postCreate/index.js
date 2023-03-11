@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Button, Collapse } from '@mui/material';
 import React from 'react';
-import PostInput from './postCreate/PostInput';
+import PostInput from './input';
 
 const CollapseStyled = styled(Collapse)({
 	top: '15px',
@@ -9,7 +9,7 @@ const CollapseStyled = styled(Collapse)({
 	position: 'absolute',
 });
 
-const CreateNewPost = () => {
+const CreatePost = () => {
 	const [isOpenInput, setIsOpenInput] = React.useState(false);
 	const openCreatePost = () => setIsOpenInput(true);
 	return (
@@ -31,4 +31,4 @@ const CreateNewPost = () => {
 	);
 };
 
-export default CreateNewPost;
+export default CreatePost;

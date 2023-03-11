@@ -38,18 +38,34 @@ export const me = `
 `;
 
 export const getPostsList = `
-	query {
-		posts {
+	query($userId: ID, $last: Int) {
+		posts(userId: $userId, last: $last) {
 			posts {
 				author {
-					email,
+					email
 					id
-				},
-				content,
-				title,
-				id,
+				}
+				content
+				title
+				id
 				published
-			},
+			}
+			errors {
+				message
+			}
+		}
+	}
+`;
+
+export const getPostsListNoOwner = `
+	query($userId: ID, $last: Int) {
+		posts(userId: $userId, last: $last) {
+			posts {
+				content
+				title
+				id
+				published
+			}
 			errors {
 				message
 			}
@@ -120,6 +136,22 @@ export const unpublishPostQuery = `
 			post {
 				published
 				id
+			}
+		}
+	}
+`;
+
+export const updatePostQuery = `
+	mutation($postId: ID!, $post: PostInput!) {
+		postUpdate(postId: $postId, post: $post) {
+			errors {
+				message
+			},
+			post {
+				published
+				id
+				title
+				content
 			}
 		}
 	}

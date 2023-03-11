@@ -100,7 +100,7 @@ export const authOptions = {
 					email: token.email,
 				},
 				secret,
-				{ expiresIn: 3600000 },
+				{ expiresIn: 360000 },
 			);
 			return signedToken;
 		},

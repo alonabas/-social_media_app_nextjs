@@ -7,10 +7,11 @@ import DisplayUser from './DisplayUser';
 
 const UsersList = () => {
 	const session = useSession();
+	const { data = [], isLoading, error } = useSWR('/api/users', getFetcher);
+
 	if (!session || session.status === 'unauthenticated') {
 		return '';
 	}
-	const { data = [], isLoading, error } = useSWR('/api/users', getFetcher);
 	let content = '';
 	if (isLoading) {
 		content = (

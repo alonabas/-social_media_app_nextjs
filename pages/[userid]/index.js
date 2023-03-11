@@ -1,14 +1,15 @@
 import axios from 'axios';
 import React from 'react';
 import { styled } from '@mui/system';
-import { getSession } from 'next-auth/react';
+import { getSession, signOut } from 'next-auth/react';
 
 import LightContainer from '../../components/LightContainer';
 import BoldDarkText24 from '../../components/BoldDarkText24';
 import { getUserProfileById, SERVER_URL } from '../../utils/constants';
 import Bio from '../../components/Bio';
-import CreateNewPost from '../../components/CreateNewPost';
-import PostEdit from '../../components/postEdit';
+import CreateNewPost from '../../components/postCreate';
+import { PostsControlContextConstructor } from '../../components/listPosts/context';
+import ListPosts from '../../components/listPosts';
 
 const LocalLightContainer = styled(LightContainer)({
 	top: 0,
@@ -19,19 +20,7 @@ const LocalLightContainer = styled(LightContainer)({
 	width: 'calc(100vw - 20%)',
 });
 
-const DisplayAllPosts = ({ posts = [] }) => (
-	<div className="d-flex flex-wrap justify-content-evenly align-items-center overflow-auto my-2">
-		{posts.map((p) => (
-			<PostEdit
-				post={p}
-				key={p.id}
-				className="mx-3 my-2 align-self-stretch"
-			/>
-		))}
-	</div>
-);
-
-const UserScreen = ({ profile = {} }) => (
+const UserScreen = ({ profile = {}, userId }) => (
 	<LocalLightContainer className="d-flex flex-column align-items-center py-3 overflow-auto position-relative">
 		<BoldDarkText24>
 			User
@@ -42,7 +31,9 @@ const UserScreen = ({ profile = {} }) => (
 		{profile?.isMe && (
 			<CreateNewPost />
 		)}
-		<DisplayAllPosts posts={profile?.posts} />
+		<PostsControlContextConstructor posts={profile?.posts} userId={userId}>
+			<ListPosts />
+		</PostsControlContextConstructor>
 	</LocalLightContainer>
 );
 
@@ -66,6 +57,7 @@ export const getServerSideProps = async (context) => {
 		const errors = data?.data?.profile?.errors ?? [];
 		if (errors.length > 0) {
 			if (errors[0]?.code === 401) {
+				await signOut();
 				return {
 					redirect: {
 						destination: '/login',
@@ -85,10 +77,18 @@ export const getServerSideProps = async (context) => {
 			notFound: profile === null,
 			props: {
 				profile,
+				userId,
 			},
 
 		};
 	} catch (e) {
+		if (e?.response?.status === 401) {
+			return {
+				redirect: {
+					destination: '/login',
+				},
+			};
+		}
 		return {
 			notFound: true,
 		};
