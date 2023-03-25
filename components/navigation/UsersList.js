@@ -1,17 +1,14 @@
 import React from 'react';
-import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
 import { Alert, CircularProgress } from '@mui/material';
+import { useRouter } from 'next/router';
 import { getFetcher } from '../../utils/constants';
-import DisplayUser from './DisplayUser';
+import Author from '../styled/AuthorDisplay';
 
 const UsersList = () => {
-	const session = useSession();
 	const { data = [], isLoading, error } = useSWR('/api/users', getFetcher);
-
-	if (!session || session.status === 'unauthenticated') {
-		return '';
-	}
+	const router = useRouter();
+	const { userid } = router.query;
 	let content = '';
 	if (isLoading) {
 		content = (
@@ -20,11 +17,11 @@ const UsersList = () => {
 	} else if (error) {
 		content = (
 			<Alert severity="error" variant="filled" color="error">
-				{error}
+				{error.message}
 			</Alert>
 		);
 	} else if (data) {
-		content = data.map((u) => <DisplayUser user={u} key={u.id} />);
+		content = data.map((u) => <Author author={u} key={u.id} selected={userid === `user${u.id}`} className="align-self-start" />);
 	}
 
 	return (

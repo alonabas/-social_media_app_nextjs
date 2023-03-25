@@ -20,9 +20,9 @@ const Home = ({ errors = [], publishedPosts = [] }) => {
 		);
 	}
 	return (
-		<div>
+		<div className="d-flex flex-wrap">
 			{publishedPosts.map((p) => (
-				<PostDisplay post={p} key={p.id} />
+				<PostDisplay post={p} key={p.id} className="mx-2 my-1" />
 			))}
 		</div>
 	);

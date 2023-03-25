@@ -5,9 +5,9 @@ import React from 'react';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import StyledCard from '../styled/StyledCard';
 import Author from '../styled/AuthorDisplay';
-import ItalicDiv from '../styled/ItalicDiv';
 import PublishPost from '../publishPost/index';
 import ChangePostContentTitle from './ChangePostContentTitle';
+import CutContent from '../CutContent';
 
 const PostEdit = ({ post = {}, className = '' }) => {
 	const {
@@ -53,7 +53,7 @@ const PostEdit = ({ post = {}, className = '' }) => {
 						<div className="d-flex flex-row">
 							<div className="d-flex flex-column pt-2">
 								<div>{title}</div>
-								<ItalicDiv>{content}</ItalicDiv>
+								<CutContent className="mb-auto" content={content} />
 								<Author author={author} />
 							</div>
 							<IconButton color="customDark" ariaLabel="Edit post" className="ms-auto align-self-baseline flex-shrink-0">

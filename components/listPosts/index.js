@@ -1,7 +1,18 @@
 import { CircularProgress, Snackbar } from '@mui/material';
 import React from 'react';
+import PostDisplay from '../postDisplay';
 import PostEdit from '../postEdit/index';
+import RegularDark14 from '../RegularDark14';
 import PostsControlContext from './context';
+
+const NoPosts = ({ children, display = false }) => {
+	if (display) {
+		return (
+			<RegularDark14>No posts yet</RegularDark14>
+		);
+	}
+	return children;
+};
 
 const Error = ({ children }) => {
 	const { error, clear } = React.useContext(PostsControlContext);
@@ -29,19 +40,27 @@ const Loading = ({ children }) => {
 	return children;
 };
 
-const ListPosts = () => {
+const ListPosts = ({ isEditable = false }) => {
 	const { posts = [] } = React.useContext(PostsControlContext);
 	return (
 		<Error>
 			<Loading>
 				<div className="d-flex flex-wrap justify-content-evenly align-items-center overflow-auto my-2">
-					{posts.map((p) => (
-						<PostEdit
-							post={p}
-							key={p.id}
-							className="mx-3 my-2 align-self-stretch"
-						/>
-					))}
+					<NoPosts display={posts.length === 0}>
+						{posts.map((p) => (
+
+							isEditable
+								? (
+									<PostEdit
+										post={p}
+										key={p.id}
+										className="mx-3 my-2 align-self-stretch"
+									/>
+								)
+								: <PostDisplay post={p} key={p.id} className="mx-2 my-1 align-self-start" />
+
+						))}
+					</NoPosts>
 				</div>
 			</Loading>
 		</Error>

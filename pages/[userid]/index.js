@@ -32,7 +32,7 @@ const UserScreen = ({ profile = {}, userId }) => (
 			<CreateNewPost />
 		)}
 		<PostsControlContextConstructor posts={profile?.posts} userId={userId}>
-			<ListPosts />
+			<ListPosts isEditable={profile?.isMe} />
 		</PostsControlContextConstructor>
 	</LocalLightContainer>
 );

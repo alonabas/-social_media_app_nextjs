@@ -3,7 +3,7 @@ import React from 'react';
 
 import StyledCard from '../styled/StyledCard';
 import Author from '../styled/AuthorDisplay';
-import ItalicDiv from '../styled/ItalicDiv';
+import CutContent from '../CutContent';
 
 const PostDisplay = ({ post = {}, className = '' }) => {
 	const {
@@ -11,9 +11,9 @@ const PostDisplay = ({ post = {}, className = '' }) => {
 	} = post;
 	return (
 		<StyledCard variant="elevation" elevation={8} raised className={className}>
-			<CardContent className="d-flex flex-column">
+			<CardContent className="d-flex flex-column h-100">
 				<div>{title}</div>
-				<ItalicDiv>{content}</ItalicDiv>
+				<CutContent className="mb-auto" content={content} />
 				<Author author={author} />
 			</CardContent>
 		</StyledCard>

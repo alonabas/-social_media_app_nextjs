@@ -15,7 +15,7 @@ export const PostsControlContextConstructor = ({ children, posts, userId }) => {
 
 	React.useEffect(() => {
 		dispatch({ type: ACTIONS_FOR_LIST_POSTS.ON_SUCCESS, data: posts });
-	}, []);
+	}, [posts]);
 
 	const refreshPosts = () => {
 		dispatch({ type: ACTIONS_FOR_LIST_POSTS.START });

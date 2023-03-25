@@ -73,6 +73,21 @@ export const getPostsListNoOwner = `
 	}
 `;
 
+export const getUsersList = `
+	query($last: Int) {
+		users(last: $last) {
+			users {
+				email
+				id
+				name
+			}
+			errors {
+				message
+			}
+		}
+	}
+`;
+
 export const getUserProfileById = `
 		query($userId: ID!){
 			profile(userId: $userId) {
@@ -159,9 +174,4 @@ export const updatePostQuery = `
 
 export const UNAUTHORIZED_CODE = 401;
 
-export const getFetcher = (url) => axios(url)
-	.then((res) => res.data)
-	.catch((e) => {
-		console.debug(`Error fetching ${url}: ${e}`);
-		return [];
-	});
+export const getFetcher = (url) => axios(url).then((res) => res.data);

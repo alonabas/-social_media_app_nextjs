@@ -1,17 +1,8 @@
-import { styled } from '@mui/system';
-import Link from 'next/link';
 import React from 'react';
-import COLORS from '../colors';
+import StyledLink from './StyledLink';
 
-const StyledLink = styled(Link)({
-	color: COLORS.contrast2,
-	'&:hover, &:focus': {
-		color: COLORS.contrast,
-	},
-});
-
-const Author = ({ author = {} }) => (
-	<StyledLink href={`/user${author.id}`} className="align-self-end mt-2">
+const Author = ({ author = {}, selected = false }) => (
+	<StyledLink href={`/user${author.id}`} className="align-self-end mt-2" $selected={selected}>
 		{author.email}
 	</StyledLink>
 );

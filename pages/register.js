@@ -46,9 +46,9 @@ const Register = () => {
 					{error
 					&& (
 						<Alert
-							severity="error" 
-							variant="filled" 
-							color="customWithError" 
+							severity="error"
+							variant="filled"
+							color="customWithError"
 							className="mx-2 my-3"
 						>
 							{error}
