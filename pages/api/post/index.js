@@ -24,13 +24,20 @@ const handler = async (req, res) => {
 	} else if (req.method === 'GET') {
 		const result = await axios.post(process.env.GRAPHQL_BACKEND_URL, {
 			query: req?.query?.userId ? getPostsListNoOwner : getPostsList,
-			variables: { last: 10, userId: req?.query?.userId },
+			variables: {
+				take: 10,
+				userId: req?.query?.userId,
+				cursorId: req?.query?.cursorId ? parseInt(req?.query?.cursorId, 10) : undefined,
+			},
 		}, { headers: { Authorization: backendToken } });
 		const error = result?.data?.data?.posts?.errors?.[0]?.message;
 		if (error) {
 			res.status(400).end(error);
 		} else {
-			res.status(200).send(result?.data?.data?.posts?.posts ?? []);
+			res.status(200).send({
+				posts: result?.data?.data?.posts?.posts ?? [],
+				hasMore: result?.data?.data?.posts?.hasMore,
+			});
 		}
 	}
 };

@@ -38,8 +38,8 @@ export const me = `
 `;
 
 export const getPostsList = `
-	query($userId: ID, $last: Int) {
-		posts(userId: $userId, last: $last) {
+	query($userId: ID, $take: Int, $cursorId: Int) {
+		posts(userId: $userId, take: $take, cursorId: $cursorId) {
 			posts {
 				author {
 					email
@@ -50,6 +50,7 @@ export const getPostsList = `
 				id
 				published
 			}
+			hasMore
 			errors {
 				message
 			}
@@ -58,14 +59,15 @@ export const getPostsList = `
 `;
 
 export const getPostsListNoOwner = `
-	query($userId: ID, $last: Int) {
-		posts(userId: $userId, last: $last) {
+	query($userId: ID, $take: Int, $cursorId: Int) {
+		posts(userId: $userId, take: $take, cursorId: $cursorId) {
 			posts {
 				content
 				title
 				id
 				published
 			}
+			hasMore
 			errors {
 				message
 			}
@@ -74,8 +76,8 @@ export const getPostsListNoOwner = `
 `;
 
 export const getUsersList = `
-	query($last: Int) {
-		users(last: $last) {
+	query($take: Int, $cursorId: Int) {
+		users(take: $take, cursorId: $cursorId) {
 			users {
 				email
 				id
@@ -84,6 +86,7 @@ export const getUsersList = `
 			errors {
 				message
 			}
+			hasMore
 		}
 	}
 `;
@@ -98,11 +101,14 @@ export const getUserProfileById = `
 				profile {
 					bio
 					isMe
-					posts(last: 10) {
-						content
-						title
-						published
-						id
+					posts(take: 10) {
+						posts {
+							content
+							title
+							published
+							id
+						}
+						hasMore
 					}
 					user {
 						email
@@ -174,4 +180,12 @@ export const updatePostQuery = `
 
 export const UNAUTHORIZED_CODE = 401;
 
-export const getFetcher = (url) => axios(url).then((res) => res.data);
+export const getFetcher = async (url) => {
+	const result = await axios(url);
+	return result.data;
+};
+
+export const getFetcherWithCursorId = async (url, cursorId) => {
+	const result = await axios(`${url}${cursorId ? `?cursorId=${cursorId}` : ''}`);
+	return result.data;
+};

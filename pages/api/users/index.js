@@ -11,7 +11,10 @@ const handler = async (req, res) => {
 		} else {
 			const result = await axios.post(process.env.GRAPHQL_BACKEND_URL, {
 				query: getUsersList,
-				variables: { last: 10 },
+				variables: {
+					take: 2,
+					cursorId: req?.query?.cursorId ? parseInt(req?.query?.cursorId, 10) : undefined,
+				},
 			}, { headers: { Authorization: backendToken } });
 			const error = result?.data?.data?.users?.errors?.[0]?.message;
 			if (error) {
@@ -19,7 +22,10 @@ const handler = async (req, res) => {
 				console.debug(result?.data?.data?.users?.errors);
 				res.status(400).end({ message: 'Failed to get list of users' });
 			} else {
-				res.status(200).send(result?.data?.data?.users?.users ?? []);
+				res.status(200).send({
+					users: result?.data?.data?.users?.users ?? [],
+					hasMore: result?.data?.data?.users?.hasMore,
+				});
 			}
 
 			res.status(200).send([]);
