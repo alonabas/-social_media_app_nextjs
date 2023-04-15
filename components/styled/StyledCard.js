@@ -7,7 +7,7 @@ const StyledCard = styled(Card)((props) => ({
 	backgroundColor: COLORS.first,
 	color: COLORS.contrast2,
 	// fontSize: '24px',
-	width: `${(props.width ?? 200)}px`,
+	minWidth: `${(props.width ?? 200)}px`,
 }));
 
 export default StyledCard;

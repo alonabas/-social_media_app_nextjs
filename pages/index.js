@@ -34,7 +34,7 @@ const Home = ({ errors = [], publishedPosts = [], hasMore = false }) => {
 		);
 	}
 	return (
-		<div className="d-flex flex-wrap">
+		<div className="d-flex flex-wrap h-100">
 			<HasMore more={areThereMorePosts} onMore={onMore}>
 				{posts.map((p) => (
 					<PostDisplay post={p} key={p.id} className="mx-2 my-1" />

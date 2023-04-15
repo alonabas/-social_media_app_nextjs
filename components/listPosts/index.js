@@ -46,7 +46,7 @@ const ListPosts = ({ isEditable = false }) => {
 	return (
 		<Error>
 			<Loading>
-				<div className="d-flex flex-wrap justify-content-evenly align-items-center overflow-auto my-2">
+				<div className="d-flex flex-wrap justify-content-evenly overflow-auto my-2">
 					<NoPosts display={posts.length === 0}>
 						<HasMore more={hasMore} onMore={getMore}>
 							{posts.map((p) => (
@@ -58,7 +58,7 @@ const ListPosts = ({ isEditable = false }) => {
 											className="mx-3 my-2 align-self-stretch"
 										/>
 									)
-									: <PostDisplay post={p} key={p.id} className="mx-2 my-1 align-self-start" />
+									: <PostDisplay post={p} key={p.id} className="mx-2 my-1 align-self-stretch" />
 							))}
 						</HasMore>
 					</NoPosts>
